@@ -1,0 +1,73 @@
+이전의 연산의 결과가 다음 연산에 영향을 주도록 하는 것
+
+계산해서 y값을 뽑아낼 수 있음
+
+그렇다면 어떻게 연산할 것인가?
+rnn에는 state라는 개념이 있음
+중요한 것은 이전의 state와 x라는 입력값을 fw()에 넣어서 새로운 state를 계산하는데 사용할 수 있음
+<- 이 function은 모든 rnn의 cell 에서 동일함.
+
+ht = fw(ht-1, xt)
+ht = tanh(Whhht-1 + Wxhxt + bt)
+yt = Whyht + by <- y가 몇개의 vector로 나올 것인가는 W의 형태에 따라 다름
+
+* weight값은 전체 cell에서 모두 같음
+
+실제 연산이 어떻게 되어가는지를 보자.
+우선 char level로 살펴보자
+입력값에 char를 준다. hello같은 경우는 h, e, l, l, o를 준다고 볼 수 있다.
+
+입력을 hello로 넣었을 때, rnn의 결과로 나올 것은 무엇인가? h를 넣었을 때 다음 글자를 예측하는 것이 나온다. 
+<- 다음 값을 예측하는 것을 만들 수 있음
+
+일단 input chars를 vector로 바꾸어야 하는데, 여기서 가장 쉽게 사용하는 것이 one-hot encoding이다. 
+
+이것을 rnn cell에 입력하여 계산함
+첫번째 cell에서는 ht-1의 값이 없으므로 보통 0으로 두고 시작한다. <- c23수업자료 참고
+
+이전의 값들에 영향을 미치므로 이전 값들을 기억한다고도 할 수 있음
+
+hidden state값과 Why값을 이용하여 값을 출력할 수 있게 됨 <- c23 수업자료 참고
+
+output의 값을 softmax해서 cost 크기를 내면 학습을 시킬 수 있음
+
+*사용
+-Language Modeling
+-Speech Recognition
+-Machine Translation
+-Conversation Modeling/Question Answering
+-Image/Video Captioning
+-Image/Music/Dance Generation
+
+Multi-layer RNN
+더 복잡한 학습이 가능하다.
+
+LSTM(Long Shrt Term Memory)
+GRU(한국 cho교수)
+
+
+rnn만들기
+1. cell을 만든다.
+어떤 cell을 만들 것인가를 정한다.<- 출력의 size를 정해준다.
+2. 만든 cell실제로 구동시켜서 입력을 주고 출력값을 뽑아낸다.driver또는 func라고 볼 수도 잇음
+dynamic_rnn을 보통 사용한다. <- output 출력과 마지막 state값을 출력한다.
+
+cell을 생성키니는 부분과 구동시키는 부분을 바꿔서 원하는 셀로 변경할 수 있기 때문에 두 가지 구성으로 나누었다.
+
+
+어떤 입력을 넣을 것인가?
+
+input에 따른 output의 크기는 어떠한가? hidden size에 따라 달라진다. ht가 output값
+input의 demension과 상관없이 hidden size에 따라 달라진다.
+
+shape = (1, 5, 4)
+sequence data는 series data를 몇개 받을 것인가? cell을 몇번 펼칠 것인가?가 두번째 값  5
+
+shape = (3, 5, 4)
+batch_size 학습할 때 문자열 한개씩 학습시키면 너무 느리다. 그래서 문자열을 여러개 주는 것이다. 이것이 batch_size  3
+
+정해야 하는 변수 값
+batch_size, sequence_size, hidden_size<- output의 값을 어떻게 낼 것인가? one-hot으로 나와야하니까 
+-> 학습시켜야할 문자열에 따라
+
+cell의 size는 hidden_size
