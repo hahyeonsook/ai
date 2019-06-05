@@ -1,3 +1,5 @@
+http://blog.naver.com/PostView.nhn?blogId=gyrbsdl18&logNo=221013188633&redirect=Dlog&widgetTypeCall=true
+
 이전의 연산의 결과가 다음 연산에 영향을 주도록 하는 것
 
 계산해서 y값을 뽑아낼 수 있음
